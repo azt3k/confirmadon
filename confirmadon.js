@@ -7,26 +7,29 @@
     "use strict";
 
     var pluginName = "confirmadon",
-        pluginVersion = "0.1.1",
+        pluginVersion = "0.1.2",
         defaults = {
             bindTo: null,
             replacements: {
+                title: 'Confirm',
                 message: 'Are you sure you want to perform this action?',
                 yes: 'Yes',
                 no: 'No'
             },
             template:   '<div class="confirmadon-wrap" style="background:rgba(0,0,0,0.5); position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 20000;">'+
                             '<div class="confirmadon-modal" style="padding:20px; background:#fff; position: fixed; top: 50%; left: 50%; width: 240px; height: 140px; margin-top: -70px; margin left: -120px; z-index: 20001;">' +
-                                '<p>{{message}}</p><a class="confirmadon-yes" href="">{{yes}}</a><a class="confirmadon-no" href="">{{no}}</a>' +
+                                '<h4>{{title}}</h4><p>{{message}}</p><a class="confirmadon-yes" href="">{{yes}}</a><a class="confirmadon-no" href="">{{no}}</a>' +
                             '</div>' +
                         '</div>',
             noSelector: '.confirmadon-no',
             yesSelector: '.confirmadon-yes',
             visibleClass: 'confirmadon-visible',
-            onBeforeDisplay: null, // ()
-            onAfterDisplay: null,  // ()
-            onAfterConfirm: null,  // ()
-            onAfterDeny: null,     // ()
+            onBeforeShow: null,     // (confirmadon)          this = triggering elem
+            onAfterShow: null,      // (confirmadon, $dialog) this = triggering elem
+            onBeforeHide: null,     // (confirmadon, $dialog) this = triggering elem
+            onAfterHide: null,      // (confirmadon)          this = triggering elem
+            onAfterConfirm: null,   // (confirmadon)          this = triggering elem
+            onAfterDeny: null,      // (confirmadon)          this = triggering elem
             fade: true,
             applyDefaultOnConfirm: true
         };
@@ -59,11 +62,12 @@
 
                     e.preventDefault();
 
-                    // on before display callback
-                    if (typeof onBeforeDisplay == 'function') onBeforeDisplay.call($elem[0]);
+                    // on before Show callback
+                    if (typeof onBeforeShow == 'function') onBeforeShow.call($elem[0], self);
 
                     // generate HTML
-                    var msg = $elem.attr('data-message') || conf.replacements.message,
+                    var title = $elem.attr('data-title') || conf.replacements.title,
+                        msg = $elem.attr('data-message') || conf.replacements.message,
                         yes = $elem.attr('data-yes') || conf.replacements.yes,
                         no = $elem.attr('data-no') || conf.replacements.no,
                         template = $elem.attr('data-template') || conf.template,
@@ -72,6 +76,7 @@
                     // parse template
                     $template.html(
                         $template.html()
+                                 .replace(/\{\{title\}\}/, title)
                                  .replace(/\{\{message\}\}/, msg)
                                  .replace(/\{\{yes\}\}/, yes)
                                  .replace(/\{\{no\}\}/, no)
@@ -93,7 +98,7 @@
                         }
 
                         // run the callback
-                        if (typeof conf.onAfterConfirm == 'function') conf.onAfterConfirm.call($elem[0]);
+                        if (typeof conf.onAfterConfirm == 'function') conf.onAfterConfirm.call($elem[0], self);
 
                     });
 
@@ -106,11 +111,11 @@
                         self.close($template);
 
                         // run the callback
-                        if (typeof conf.onAfterDeny == 'function') conf.onAfterDeny.call($elem[0]);
+                        if (typeof conf.onAfterDeny == 'function') conf.onAfterDeny.call($elem[0], self);
 
                     });
 
-                    // display the dialog
+                    // Show the dialog
                     self.open($template);
                 }
 
@@ -121,8 +126,8 @@
         triggerEvent: function (target, type, doc, event) {
             doc = document;
             if (doc.createEvent) {
-                if (['mousedown', 'mouseup', 'click', 'dblclick', 'mousemove', 'mouseover', 'mouseout'].indexOf(type) == -1) event = new Event(type);
-                else event = new MouseEvent(type);
+                if (['mousedown', 'mouseup', 'click', 'dblclick', 'mousemove', 'mouseover', 'mouseout'].indexOf(type) != -1) event = new MouseEvent(type);
+                else event = new Event(type);
                 target.dispatchEvent(event);
             } else {
                 event = doc.createEventObject();
@@ -153,23 +158,25 @@
 
         open: function($template) {
 
-            var conf = this.settings;
+            var conf = this.settings,
+                $elem = this.$element,
+                self = this;
 
             if (conf.fade) {
                 $('body').append($template.hide());
                 $template.fadeIn(400, function(){
                     $template.addClass(conf.visibleClass);
-                    if (typeof conf.onAfterDisplay == 'function') conf.onAfterDisplay.call($elem[0]);
+                    if (typeof conf.onAfterShow == 'function') conf.onAfterShow.call($elem[0], self, $template);
                 });
             } else {
 
                 $('body').append($template);
 
                 if ($template.css('transition'))
-                    $template.one('transitionend.move webkitTransitionEnd.move oTransitionEnd.move otransitionend.move MSTransitionEnd.move', function() {
-                        if (typeof conf.onAfterDisplay == 'function') conf.onAfterDisplay.call($elem[0]);
+                    $template.one('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function() {
+                        if (typeof conf.onAfterShow == 'function') conf.onAfterShow.call($elem[0], self, $template);
                     })
-                else if (typeof conf.onAfterDisplay == 'function') conf.onAfterDisplay.call($elem[0]);
+                else if (typeof conf.onAfterShow == 'function') conf.onAfterShow.call($elem[0], self, $template);
 
                 $template.addClass(conf.visibleClass);
             }
@@ -177,18 +184,29 @@
 
         close: function($template, action) {
 
-            var conf = this.settings;
+            var conf = this.settings,
+                $elem = this.$element,
+                self = this;
+
+            if (typeof conf.onBeforeHide == 'function') conf.onBeforeHide.call($elem[0], self, $template);
 
             // hide the dialog
             if (conf.fade) {
                 $template.fadeOut(400, function(){
                     $template.remove();
+                    if (typeof conf.onAfterHide == 'function') conf.onAfterHide.call($elem[0], self);
                 });
             } else {
                 $template.removeClass(conf.visibleClass);
-                setTimeout(function() {
-                    $template.remove(); // remove the elem after 30 secs
-                },30000);
+                if ($template.css('transition'))
+                    $template.one('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function() {
+                        $template.remove();
+                        if (typeof conf.onAfterHide == 'function') conf.onAfterHide.call($elem[0], self);
+                    })
+                else {
+                    $template.remove();
+                    if (typeof conf.onAfterHide == 'function') conf.onAfterHide.call($elem[0], self);
+                }
             }
         },
 
@@ -207,3 +225,4 @@
     };
 
 })(jQuery, window, document);
+
