@@ -42,6 +42,14 @@ defaults = {
 };
 ````
 
+### Attribute Based Overrides
+
+- `data-template` - an html string or selector for the template
+- `data-message` - the message that gets parsed out into the teplate's `{{message}}` token
+- `data-yes` - the message that gets parsed out into the teplate's `{{yes}}` token
+- `data-no` - the message that gets parsed out into the teplate's `{{no}}` token
+
+
 ### Todo
 
 - Finish docs

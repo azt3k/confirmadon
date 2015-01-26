@@ -7,7 +7,7 @@
     "use strict";
 
     var pluginName = "confirmadon",
-        pluginVersion = "0.1.0",
+        pluginVersion = "0.1.1",
         defaults = {
             bindTo: null,
             replacements: {
@@ -57,7 +57,6 @@
 
                 } else {
 
-                    console.log('ooooo');
                     e.preventDefault();
 
                     // on before display callback
@@ -67,7 +66,8 @@
                     var msg = $elem.attr('data-message') || conf.replacements.message,
                         yes = $elem.attr('data-yes') || conf.replacements.yes,
                         no = $elem.attr('data-no') || conf.replacements.no,
-                        $template = $(conf.template).clone();
+                        template = $elem.attr('data-template') || conf.template,
+                        $template = $(template).clone();
 
                     // parse template
                     $template.html(
