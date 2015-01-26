@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<!--[if !IE]><!-->
+<html>
+<!--<![endif]-->
+<!--[if IE 6 ]><html class="ie ie6"><![endif]-->
+<!--[if IE 7 ]><html class="ie ie7"><![endif]-->
+<!--[if IE 8 ]><html class="ie ie8"><![endif]-->
+
+    <head>
+        <title>Confirmadon Demo</title>
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;">
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <style type="text/css">
+            .container {
+                max-width:990px;
+                margin:auto;
+            }
+            .back-btn {
+                margin-top: 20px;
+            }
+            .sorted-asc:after, .sorted-desc:after {
+                display: inline-block;
+                font-family: "Glyphicons Halflings";
+                font-style: normal;
+                font-weight: 400;
+                line-height: 1;
+                position: relative;
+                top: 1px;
+            }
+            .sorted-asc:after {
+                content: "";
+            }
+            .sorted-desc:after {
+                content: "";
+            }
+        </style>
+        <!-- <script src="https://getfirebug.com/releases/lite/1.4/firebug-lite-debug.js"></script> -->
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="confirmadon.js"></script>
+        <script type="text/javascript" language="javascript">
+            $(function() {
+                $('.remove').confirmadon({
+                    template:   '<div class="confirmadon-wrap" style="background:rgba(0,0,0,0.5); position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 20000;">'+
+                                    '<div class="confirmadon-modal" style="padding:20px; background:#fff; position: fixed; top: 50%; left: 50%; width: 240px; height: 140px; margin-top: -70px; margin left: -120px; z-index: 20001;">' +
+                                        '<p>{{message}}</p><a class="confirmadon-yes btn btn-danger" href="">{{yes}}</a><a class="confirmadon-no btn" href="">{{no}}</a>' +
+                                    '</div>' +
+                                '</div>'
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <a href="index.html" class="back-btn pull-right btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Back</a>
+            <h1>Default Demo</h1>
+            <p>A button with a confirm and default options</p>
+            <a href="?remove=1" data-yes="Remove" data-no="Cancel" data-message="Are you sure you want to remove this item?" class="btn btn-danger remove">Remove Me</a>
+        </div>
+
+    </body>
+
+</html>

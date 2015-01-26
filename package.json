@@ -1,0 +1,27 @@
+{
+  "name": "confirmadon",
+  "version": "0.1.0",
+  "description": "Simple jQuery confirmation dialogue",
+  "main": "confirmadon.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/azt3k/confirmadon.git"
+  },
+  "devDependencies": {
+    "uglify-js": "2.4.15"
+  },
+  "keywords": [
+    "height",
+    "width",
+    "confirmadon",
+    "jquery"
+  ],
+  "author": "Aaron Latham-Ilari",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/azt3k/confirmadon/issues"
+  }
+}

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+OUTPUT=$(uglifyjs confirmadon.js -m -r '$,require,exports')
+echo ";$OUTPUT" > confirmadon.min.js

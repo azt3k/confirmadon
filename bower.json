@@ -1,0 +1,20 @@
+{
+  "name": "confirmadon",
+  "version": "0.1.0",
+  "repo": "azt3k/confirmadon",
+  "homepage": "https://github.com/azt3k/confirmadon",
+  "description": "Simple jQuery confirmation dialogue",
+  "keywords": [
+    "height",
+    "width",
+    "confirmadon",
+    "jquery"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "~1.11.1"
+  },
+  "main": "confirmadon.js",
+  "development": {},
+  "ignore": []
+}
