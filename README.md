@@ -18,9 +18,10 @@ $('.remove').confirmadon();
 
 
 ````json
-defaults = {
+{
     bindTo: null,
     replacements: {
+        title: 'Confirm',
         message: 'Are you sure you want to perform this action?',
         yes: 'Yes',
         no: 'No'
@@ -33,10 +34,12 @@ defaults = {
     noSelector: '.confirmadon-no',
     yesSelector: '.confirmadon-yes',
     visibleClass: 'confirmadon-visible',
-    onBeforeDisplay: null, // ()
-    onAfterDisplay: null,  // ()
-    onAfterConfirm: null,  // ()
-    onAfterDeny: null,     // ()
+    onBeforeShow: null,     // (confirmadon)          this = triggering elem
+    onAfterShow: null,      // (confirmadon, $dialog) this = triggering elem
+    onBeforeHide: null,     // (confirmadon, $dialog) this = triggering elem
+    onAfterHide: null,      // (confirmadon)          this = triggering elem
+    onAfterConfirm: null,   // (confirmadon)          this = triggering elem
+    onAfterDeny: null,      // (confirmadon)          this = triggering elem
     fade: true,
     applyDefaultOnConfirm: true
 };

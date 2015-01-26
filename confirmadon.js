@@ -7,7 +7,7 @@
     "use strict";
 
     var pluginName = "confirmadon",
-        pluginVersion = "0.1.2",
+        pluginVersion = "0.1.3",
         defaults = {
             bindTo: null,
             replacements: {
@@ -172,11 +172,12 @@
 
                 $('body').append($template);
 
-                if ($template.css('transition'))
+                if ($template.css('transition') && parseFloat($template.css('transition-duration')))
                     $template.one('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function() {
                         if (typeof conf.onAfterShow == 'function') conf.onAfterShow.call($elem[0], self, $template);
-                    })
-                else if (typeof conf.onAfterShow == 'function') conf.onAfterShow.call($elem[0], self, $template);
+                    });
+                else if (typeof conf.onAfterShow == 'function')
+                    conf.onAfterShow.call($elem[0], self, $template);
 
                 $template.addClass(conf.visibleClass);
             }
@@ -198,11 +199,11 @@
                 });
             } else {
                 $template.removeClass(conf.visibleClass);
-                if ($template.css('transition'))
+                if ($template.css('transition') && parseFloat($template.css('transition-duration')))
                     $template.one('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function() {
                         $template.remove();
                         if (typeof conf.onAfterHide == 'function') conf.onAfterHide.call($elem[0], self);
-                    })
+                    });
                 else {
                     $template.remove();
                     if (typeof conf.onAfterHide == 'function') conf.onAfterHide.call($elem[0], self);
