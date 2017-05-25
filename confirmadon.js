@@ -1,8 +1,24 @@
-/**
- * Made awesome by AzT3k.
- */
+;(function (root, factory) {
 
-;(function($, window, document, undefined) {
+    // AMD. Register as an anonymous module depending on jQuery.
+    if (typeof define === 'function' && define.amd)
+        define(
+            ['jquery'],
+            factory
+        );
+
+    // Node, CommonJS-like
+    else if (typeof exports === 'object')
+        module.exports = factory(
+            require('jquery')
+        );
+
+    // Browser globals (root is window)
+    else {
+        root.confirmadon = factory(root.jQuery);
+    }
+
+}(this, function($, undefined) {
 
     "use strict";
 
@@ -225,5 +241,4 @@
         });
     };
 
-})(jQuery, window, document);
-
+}));
