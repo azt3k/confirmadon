@@ -1,6 +1,6 @@
 {
   "name": "confirmadon",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repo": "azt3k/confirmadon",
   "homepage": "https://github.com/azt3k/confirmadon",
   "description": "Simple jQuery confirmation dialogue",

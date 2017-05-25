@@ -23,7 +23,7 @@
     "use strict";
 
     var pluginName = "confirmadon",
-        pluginVersion = "0.1.3",
+        pluginVersion = "1.0.1",
         defaults = {
             bindTo: null,
             replacements: {

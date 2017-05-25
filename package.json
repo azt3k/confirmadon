@@ -1,6 +1,6 @@
 {
   "name": "confirmadon",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple jQuery confirmation dialogue",
   "main": "confirmadon.js",
   "scripts": {
